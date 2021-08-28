@@ -7,5 +7,6 @@ pub use self::gates::NANDGate;
 pub use self::gates::NOTGate;
 pub use self::gates::ANDGate;
 pub use self::gates::ORGate;
+pub use self::gates::XORGate;
 
 mod components {}
