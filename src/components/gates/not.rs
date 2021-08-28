@@ -9,22 +9,19 @@ pub struct NOTGate {
 
 impl Default for NOTGate {
     fn default() -> Self {
-        let mut nand_gate = NANDGate::default();
-        let input = wiring::Wire::default();
-        let output = wiring::Wire::default();
-        wiring::connect(&mut nand_gate.input1, input.clone());
-        wiring::connect(&mut nand_gate.input2, input.clone());
-        wiring::connect(&mut nand_gate.output, output.clone());
         NOTGate {
-            input: input,
-            output: output,
-            nand: nand_gate,
+            input: wiring::Wire::default(),
+            output: wiring::Wire::default(),
+            nand: NANDGate::default(),
         }
     }
 }
 
 impl NOTGate {
     pub fn settle(&mut self) {
+        wiring::connect(&mut self.nand.input1, self.input.clone());
+        wiring::connect(&mut self.nand.input2, self.input.clone());
+        wiring::connect(&mut self.nand.output, self.output.clone());
         self.nand.settle();
     }
 }

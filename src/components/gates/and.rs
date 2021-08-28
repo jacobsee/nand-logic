@@ -11,28 +11,23 @@ pub struct ANDGate {
 
 impl Default for ANDGate {
     fn default() -> Self {
-        let mut nand1 = NANDGate::default();
-        let mut nand2 = NANDGate::default();
-        let input1 = wiring::Wire::default();
-        let input2 = wiring::Wire::default();
-        let output = wiring::Wire::default();
-        wiring::connect(&mut nand1.input1, input1.clone());
-        wiring::connect(&mut nand1.input2, input2.clone());
-        wiring::connect(&mut nand2.input1, nand1.output.clone());
-        wiring::connect(&mut nand2.input2, nand1.output.clone());
-        wiring::connect(&mut nand2.output, output.clone());
         ANDGate {
-            input1: input1,
-            input2: input2,
-            output: output,
-            nand1: nand1,
-            nand2: nand2,
+            input1: wiring::Wire::default(),
+            input2: wiring::Wire::default(),
+            output: wiring::Wire::default(),
+            nand1: NANDGate::default(),
+            nand2: NANDGate::default(),
         }
     }
 }
 
 impl ANDGate {
     pub fn settle(&mut self) {
+        wiring::connect(&mut self.nand1.input1, self.input1.clone());
+        wiring::connect(&mut self.nand1.input2, self.input2.clone());
+        wiring::connect(&mut self.nand2.input1, self.nand1.output.clone());
+        wiring::connect(&mut self.nand2.input2, self.nand1.output.clone());
+        wiring::connect(&mut self.nand2.output, self.output.clone());
         self.nand1.settle();
         self.nand2.settle();
     }
